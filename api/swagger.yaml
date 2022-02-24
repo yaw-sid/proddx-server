@@ -1,0 +1,493 @@
+openapi: 3.0.0
+info:
+  title: Proddx API
+  version: 0.1.0
+servers:
+- url: http://localhost:3000
+paths:
+  /companies:
+    get:
+      summary: Returns a list of companies.
+      responses:
+        "200":
+          description: A JSON array of companies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Company'
+                x-content-type: application/json
+        "404":
+          description: Not found error
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+                x-content-type: text/plain; charset=utf-8
+    post:
+      summary: Creates a new company.
+      requestBody:
+        description: Company creation object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyRequest'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        "400":
+          description: A bad request error
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "422":
+          description: Unprocessable entity error
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+  /companies/{id}:
+    get:
+      summary: "Returns a company identified by {id}"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+    put:
+      summary: "Updates a company identified by {id}"
+      requestBody:
+        description: Company update object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        "400":
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "422":
+          description: Unprocessable entity
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+    delete:
+      summary: "Deletes a company identified by {id}"
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "500":
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+  /products:
+    get:
+      summary: Returns a list of products.
+      responses:
+        "200":
+          description: A JSON array of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+                x-content-type: application/json
+        "404":
+          description: Not found error
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+                x-content-type: text/plain; charset=utf-8
+    post:
+      summary: Creates a new product.
+      requestBody:
+        description: Product creation object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "400":
+          description: A bad request error
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "422":
+          description: Unprocessable entity error
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+  /products/{id}:
+    get:
+      summary: "Returns a product identified by {id}"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+    put:
+      summary: "Updates a product identified by {id}"
+      requestBody:
+        description: Product update object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "400":
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "422":
+          description: Unprocessable entity
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+    delete:
+      summary: "Deletes a product identified by {id}"
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "500":
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+  /reviews:
+    get:
+      summary: Returns a list of reviews.
+      responses:
+        "200":
+          description: A JSON array of reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+                x-content-type: application/json
+        "404":
+          description: Not found error
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+                x-content-type: text/plain; charset=utf-8
+    post:
+      summary: Creates a new review.
+      requestBody:
+        description: Review creation object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewRequest'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        "400":
+          description: A bad request error
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "422":
+          description: Unprocessable entity error
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+  /reviews/{id}:
+    get:
+      summary: "Returns a review identified by {id}"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+    put:
+      summary: "Updates a review identified by {id}"
+      requestBody:
+        description: Review update object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        "400":
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "422":
+          description: Unprocessable entity
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+    delete:
+      summary: "Deletes a review identified by {id}"
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+        "500":
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                x-content-type: text/plain
+components:
+  schemas:
+    CompanyRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        logo:
+          type: string
+    Company:
+      type: object
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        logo:
+          type: string
+        created_at:
+          type: string
+      example:
+        user_id: user_id
+        name: name
+        logo: logo
+        created_at: created_at
+        id: id
+        email: email
+    ProductRequest:
+      type: object
+      properties:
+        company_id:
+          type: string
+        name:
+          type: string
+        feedback_url:
+          type: string
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        company_id:
+          type: string
+        name:
+          type: string
+        feedback_url:
+          type: string
+        rating:
+          type: number
+        created_at:
+          type: string
+      example:
+        feedback_url: feedback_url
+        company_id: company_id
+        name: name
+        rating: 0.8008281904610115
+        created_at: created_at
+        id: id
+    ReviewRequest:
+      type: object
+      properties:
+        company_id:
+          type: string
+        product_id:
+          type: string
+        comment:
+          type: string
+        rating:
+          type: number
+    Review:
+      type: object
+      properties:
+        id:
+          type: string
+        company_id:
+          type: string
+        product_id:
+          type: string
+        comment:
+          type: string
+        rating:
+          type: number
+        created_at:
+          type: string
+      example:
+        company_id: company_id
+        product_id: product_id
+        rating: 0.8008281904610115
+        created_at: created_at
+        comment: comment
+        id: id
