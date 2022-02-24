@@ -1,37 +1,143 @@
 package router
 
-import "net/http"
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"time"
 
-func insertProduct() http.HandlerFunc {
+	"api.proddx.com/storage"
+	"github.com/julienschmidt/httprouter"
+	uuid "github.com/satori/go.uuid"
+)
+
+func insertProduct(storage storage.Product) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		req := new(productRequest)
+		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+			fmt.Println("Error:", err.Error())
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		if req.CompanyID == "" || req.Name == "" || req.FeedbackURL == "" {
+			fmt.Println("Error: company_id, name and feedback_url are required")
+			http.Error(w, "company_id, name and feedback_url are required", http.StatusBadRequest)
+			return
+		}
+
+		prod := productFromTransport(req)
+		prod.ID = uuid.NewV4().String()
+		prod.Rating = 0
+		prod.CreatedAt = time.Now()
+		model := productToStorage(prod)
+		if err := storage.Save(model); err != nil {
+			fmt.Println("Error:", err.Error())
+			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
+			return
+		}
+
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(*prod)
 	}
 }
 
-func listProducts() http.HandlerFunc {
+func listProducts(storage storage.Product) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		records, err := storage.List()
+		if err != nil {
+			fmt.Println("Error:", err.Error())
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+		if len(records) == 0 {
+			fmt.Println("Error:", "No products found")
+			http.Error(w, "No products found", http.StatusNotFound)
+			return
+		}
+		var resp []product
+		for _, record := range records {
+			resp = append(resp, *productFromStorage(&record))
+		}
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(resp)
 	}
 }
 
-func findProduct() http.HandlerFunc {
+func findProduct(storage storage.Product) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		params := httprouter.ParamsFromContext(r.Context())
+		id := params.ByName("id")
+		if _, err := uuid.FromString(id); err != nil {
+			fmt.Println("Error:", err.Error())
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		record, err := storage.Find(id)
+		if err != nil {
+			fmt.Println("Error:", err.Error())
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+		resp := productFromStorage(record)
+
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(*resp)
 	}
 }
 
-func updateProduct() http.HandlerFunc {
+func updateProduct(storage storage.Product) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		req := new(productRequest)
+		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
+			fmt.Println("Error:", err.Error())
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		params := httprouter.ParamsFromContext(r.Context())
+		id := params.ByName("id")
+		if _, err := uuid.FromString(id); err != nil {
+			fmt.Println("Error:", err.Error())
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		prod := productFromTransport(req)
+		prod.ID = id
+		model := productToStorage(prod)
+		if err := storage.Save(model); err != nil {
+			fmt.Println("Error:", err.Error())
+			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
+			return
+		}
+
+		prod = productFromStorage(model)
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(*prod)
 	}
 }
 
-func deleteProduct() http.HandlerFunc {
+func deleteProduct(storage storage.Product) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		params := httprouter.ParamsFromContext(r.Context())
+		id := params.ByName("id")
+		if _, err := uuid.FromString(id); err != nil {
+			fmt.Println("Error:", err.Error())
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		if err := storage.Delete(id); err != nil {
+			fmt.Println("Error:", err.Error())
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+
 		w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
 		w.WriteHeader(http.StatusNoContent)
 	}

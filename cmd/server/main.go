@@ -20,12 +20,17 @@ import (
 	//    sw "github.com/myname/myrepo/go"
 	//
 	sw "api.proddx.com/router"
+	"api.proddx.com/storage"
 )
 
 func main() {
 	log.Printf("Server started")
 
-	router := sw.New()
+	companyStore := new(storage.CompanyMemoryStore)
+	productStore := new(storage.ProductMemoryStore)
+	reviewStore := new(storage.ReviewMemoryStore)
+
+	router := sw.New(companyStore, productStore, reviewStore)
 
 	log.Fatal(http.ListenAndServe(":3000", router))
 }

@@ -12,31 +12,32 @@ import (
 	"fmt"
 	"net/http"
 
+	"api.proddx.com/storage"
 	"github.com/julienschmidt/httprouter"
 )
 
-func New() *httprouter.Router {
+func New(cs storage.Company, ps storage.Product, rs storage.Review) *httprouter.Router {
 	router := httprouter.New()
 
 	router.Handler(http.MethodGet, "/", Logger(Index(), "Index"))
 
-	router.Handler(http.MethodGet, "/companies", Logger(listCompanies(), "ListCompanies"))
-	router.Handler(http.MethodPost, "/companies", Logger(insertCompany(), "InsertCompany"))
-	router.Handler(http.MethodGet, "/companies/:id", Logger(findCompany(), "FindCompany"))
-	router.Handler(http.MethodPut, "/companies/:id", Logger(updateCompany(), "UpdateCompany"))
-	router.Handler(http.MethodDelete, "/companies/:id", Logger(deleteCompany(), "DeleteCompany"))
+	router.Handler(http.MethodGet, "/companies", Logger(listCompanies(cs), "ListCompanies"))
+	router.Handler(http.MethodPost, "/companies", Logger(insertCompany(cs), "InsertCompany"))
+	router.Handler(http.MethodGet, "/companies/:id", Logger(findCompany(cs), "FindCompany"))
+	router.Handler(http.MethodPut, "/companies/:id", Logger(updateCompany(cs), "UpdateCompany"))
+	router.Handler(http.MethodDelete, "/companies/:id", Logger(deleteCompany(cs), "DeleteCompany"))
 
-	router.Handler(http.MethodGet, "/products", Logger(listProducts(), "ListProducts"))
-	router.Handler(http.MethodPost, "/products", Logger(insertProduct(), "InsertProduct"))
-	router.Handler(http.MethodGet, "/products/:id", Logger(findProduct(), "FindProduct"))
-	router.Handler(http.MethodPut, "/products/:id", Logger(updateProduct(), "UpdateProduct"))
-	router.Handler(http.MethodDelete, "/products/:id", Logger(deleteProduct(), "DeleteProduct"))
+	router.Handler(http.MethodGet, "/products", Logger(listProducts(ps), "ListProducts"))
+	router.Handler(http.MethodPost, "/products", Logger(insertProduct(ps), "InsertProduct"))
+	router.Handler(http.MethodGet, "/products/:id", Logger(findProduct(ps), "FindProduct"))
+	router.Handler(http.MethodPut, "/products/:id", Logger(updateProduct(ps), "UpdateProduct"))
+	router.Handler(http.MethodDelete, "/products/:id", Logger(deleteProduct(ps), "DeleteProduct"))
 
-	router.Handler(http.MethodGet, "/reviews", Logger(listReviews(), "ListReviews"))
-	router.Handler(http.MethodPost, "/reviews", Logger(insertReview(), "InsertReview"))
-	router.Handler(http.MethodGet, "/reviews/:id", Logger(findReview(), "FindReview"))
-	router.Handler(http.MethodPut, "/reviews/:id", Logger(updateReview(), "UpdateReview"))
-	router.Handler(http.MethodDelete, "/reviews/:id", Logger(deleteReview(), "DeleteReview"))
+	router.Handler(http.MethodGet, "/reviews", Logger(listReviews(rs), "ListReviews"))
+	router.Handler(http.MethodPost, "/reviews", Logger(insertReview(rs), "InsertReview"))
+	router.Handler(http.MethodGet, "/reviews/:id", Logger(findReview(rs), "FindReview"))
+	router.Handler(http.MethodPut, "/reviews/:id", Logger(updateReview(rs), "UpdateReview"))
+	router.Handler(http.MethodDelete, "/reviews/:id", Logger(deleteReview(rs), "DeleteReview"))
 
 	return router
 }

@@ -17,11 +17,11 @@ func TestCompanyMemorySave(t *testing.T) {
 		Logo:      "https://proddx.com/company-one/logo.png",
 		CreatedAt: time.Now(),
 	}
-	storage := new(companyMemoryStore)
-	if err := storage.save(cm); err != nil {
+	storage := new(CompanyMemoryStore)
+	if err := storage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	if _, err := storage.find(id); err != nil {
+	if _, err := storage.Find(id); err != nil {
 		t.Errorf("Error: %s", err.Error())
 	}
 }
@@ -36,11 +36,11 @@ func TestCompanyMemoryList(t *testing.T) {
 		Logo:      "https://proddx.com/company-one/logo.png",
 		CreatedAt: time.Now(),
 	}
-	storage := new(companyMemoryStore)
-	if err := storage.save(cm); err != nil {
+	storage := new(CompanyMemoryStore)
+	if err := storage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	cms, err := storage.list()
+	cms, err := storage.List()
 	if err != nil {
 		t.Fatalf("Error: %s", err)
 	}
@@ -59,11 +59,11 @@ func TestCompanyMemoryFind(t *testing.T) {
 		Logo:      "https://proddx.com/company-one/logo.png",
 		CreatedAt: time.Now(),
 	}
-	storage := new(companyMemoryStore)
-	if err := storage.save(cm); err != nil {
+	storage := new(CompanyMemoryStore)
+	if err := storage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	record, err := storage.find(id)
+	record, err := storage.Find(id)
 	if err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -82,14 +82,14 @@ func TestCompanyMemoryDelete(t *testing.T) {
 		Logo:      "https://proddx.com/company-one/logo.png",
 		CreatedAt: time.Now(),
 	}
-	storage := new(companyMemoryStore)
-	if err := storage.save(cm); err != nil {
+	storage := new(CompanyMemoryStore)
+	if err := storage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	if err := storage.delete(id); err != nil {
+	if err := storage.Delete(id); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	if _, err := storage.find(id); err == nil {
+	if _, err := storage.Find(id); err == nil {
 		t.Errorf("Error: %s", "Record was not deleted")
 	}
 }
@@ -104,11 +104,11 @@ func TestProductMemorySave(t *testing.T) {
 		Rating:      4,
 		CreatedAt:   time.Now(),
 	}
-	storage := new(productMemoryStore)
-	if err := storage.save(pm); err != nil {
+	storage := new(ProductMemoryStore)
+	if err := storage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	if _, err := storage.find(id); err != nil {
+	if _, err := storage.Find(id); err != nil {
 		t.Errorf("Error: %s", err.Error())
 	}
 }
@@ -123,11 +123,11 @@ func TestProductMemoryList(t *testing.T) {
 		Rating:      4,
 		CreatedAt:   time.Now(),
 	}
-	storage := new(productMemoryStore)
-	if err := storage.save(pm); err != nil {
+	storage := new(ProductMemoryStore)
+	if err := storage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	records, err := storage.list()
+	records, err := storage.List()
 	if err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -146,11 +146,11 @@ func TestProductMemoryFind(t *testing.T) {
 		Rating:      4,
 		CreatedAt:   time.Now(),
 	}
-	storage := new(productMemoryStore)
-	if err := storage.save(pm); err != nil {
+	storage := new(ProductMemoryStore)
+	if err := storage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	record, err := storage.find(id)
+	record, err := storage.Find(id)
 	if err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -170,14 +170,14 @@ func TestProductMemoryDelete(t *testing.T) {
 		Rating:      4,
 		CreatedAt:   time.Now(),
 	}
-	storage := new(productMemoryStore)
-	if err := storage.save(pm); err != nil {
+	storage := new(ProductMemoryStore)
+	if err := storage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	if err := storage.delete(id); err != nil {
+	if err := storage.Delete(id); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	if _, err := storage.find(id); err == nil {
+	if _, err := storage.Find(id); err == nil {
 		t.Errorf("Error: %s", "Record not deleted")
 	}
 }
@@ -192,11 +192,11 @@ func TestReviewMemorySave(t *testing.T) {
 		Rating:    4,
 		CreatedAt: time.Now(),
 	}
-	storage := new(reviewMemoryStore)
-	if err := storage.save(rm); err != nil {
+	storage := new(ReviewMemoryStore)
+	if err := storage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	if _, err := storage.find(id); err != nil {
+	if _, err := storage.Find(id); err != nil {
 		t.Errorf("Error: %s", err.Error())
 	}
 }
@@ -211,11 +211,11 @@ func TestReviewMemoryList(t *testing.T) {
 		Rating:    4,
 		CreatedAt: time.Now(),
 	}
-	storage := new(reviewMemoryStore)
-	if err := storage.save(rm); err != nil {
+	storage := new(ReviewMemoryStore)
+	if err := storage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	records, err := storage.list()
+	records, err := storage.List()
 	if err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -234,11 +234,11 @@ func TestReviewMemoryFind(t *testing.T) {
 		Rating:    4,
 		CreatedAt: time.Now(),
 	}
-	storage := new(reviewMemoryStore)
-	if err := storage.save(rm); err != nil {
+	storage := new(ReviewMemoryStore)
+	if err := storage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	record, err := storage.find(id)
+	record, err := storage.Find(id)
 	if err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -257,14 +257,14 @@ func TestReviewMemoryDelete(t *testing.T) {
 		Rating:    4,
 		CreatedAt: time.Now(),
 	}
-	storage := new(reviewMemoryStore)
-	if err := storage.save(rm); err != nil {
+	storage := new(ReviewMemoryStore)
+	if err := storage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	if err := storage.delete(id); err != nil {
+	if err := storage.Delete(id); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	if _, err := storage.find(id); err == nil {
+	if _, err := storage.Find(id); err == nil {
 		t.Errorf("Error: %s", "Record not deleted")
 	}
 }

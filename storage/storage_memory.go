@@ -2,14 +2,23 @@ package storage
 
 import "errors"
 
-type companyMemoryStore struct {
+type CompanyMemoryStore struct {
 	companies []CompanyModel
 }
 
-func (cms *companyMemoryStore) save(model *CompanyModel) error {
+func (cms *CompanyMemoryStore) Save(model *CompanyModel) error {
 	for index, record := range cms.companies {
 		if record.ID == model.ID {
-			cms.companies[index] = *model
+			if &model.Name != nil {
+				cms.companies[index].Name = model.Name
+			}
+			if &model.Email != nil {
+				cms.companies[index].Email = model.Email
+			}
+			if &model.Logo != nil {
+				cms.companies[index].Logo = model.Logo
+			}
+			model = &cms.companies[index]
 			return nil
 		}
 	}
@@ -17,14 +26,14 @@ func (cms *companyMemoryStore) save(model *CompanyModel) error {
 	return nil
 }
 
-func (cms companyMemoryStore) list() ([]CompanyModel, error) {
+func (cms CompanyMemoryStore) List() ([]CompanyModel, error) {
 	if len(cms.companies) == 0 {
 		return cms.companies, errors.New("No companies found")
 	}
 	return cms.companies, nil
 }
 
-func (cms companyMemoryStore) find(id string) (*CompanyModel, error) {
+func (cms CompanyMemoryStore) Find(id string) (*CompanyModel, error) {
 	for _, record := range cms.companies {
 		if record.ID.String() == id {
 			return &record, nil
@@ -33,7 +42,7 @@ func (cms companyMemoryStore) find(id string) (*CompanyModel, error) {
 	return nil, errors.New("Company not found")
 }
 
-func (cms *companyMemoryStore) delete(id string) error {
+func (cms *CompanyMemoryStore) Delete(id string) error {
 	for index, record := range cms.companies {
 		if record.ID.String() == id {
 			cms.companies[index] = cms.companies[len(cms.companies)-1]
@@ -44,14 +53,20 @@ func (cms *companyMemoryStore) delete(id string) error {
 	return errors.New("Company not found")
 }
 
-type productMemoryStore struct {
+type ProductMemoryStore struct {
 	products []ProductModel
 }
 
-func (pms *productMemoryStore) save(model *ProductModel) error {
+func (pms *ProductMemoryStore) Save(model *ProductModel) error {
 	for index, record := range pms.products {
 		if record.ID == model.ID {
-			pms.products[index] = *model
+			if &model.Name != nil {
+				pms.products[index].Name = model.Name
+			}
+			if &model.Rating != nil {
+				pms.products[index].Rating = model.Rating
+			}
+			model = &pms.products[index]
 			return nil
 		}
 	}
@@ -59,14 +74,14 @@ func (pms *productMemoryStore) save(model *ProductModel) error {
 	return nil
 }
 
-func (pms productMemoryStore) list() ([]ProductModel, error) {
+func (pms ProductMemoryStore) List() ([]ProductModel, error) {
 	if len(pms.products) == 0 {
 		return pms.products, errors.New("No products found")
 	}
 	return pms.products, nil
 }
 
-func (pms productMemoryStore) find(id string) (*ProductModel, error) {
+func (pms ProductMemoryStore) Find(id string) (*ProductModel, error) {
 	for _, record := range pms.products {
 		if record.ID.String() == id {
 			return &record, nil
@@ -75,7 +90,7 @@ func (pms productMemoryStore) find(id string) (*ProductModel, error) {
 	return nil, errors.New("Product not found")
 }
 
-func (pms *productMemoryStore) delete(id string) error {
+func (pms *ProductMemoryStore) Delete(id string) error {
 	for index, record := range pms.products {
 		if record.ID.String() == id {
 			pms.products[index] = pms.products[len(pms.products)-1]
@@ -86,14 +101,20 @@ func (pms *productMemoryStore) delete(id string) error {
 	return errors.New("Product not found")
 }
 
-type reviewMemoryStore struct {
+type ReviewMemoryStore struct {
 	reviews []ReviewModel
 }
 
-func (rms *reviewMemoryStore) save(model *ReviewModel) error {
+func (rms *ReviewMemoryStore) Save(model *ReviewModel) error {
 	for index, record := range rms.reviews {
 		if record.ID == model.ID {
-			rms.reviews[index] = *model
+			if &model.Comment != nil {
+				rms.reviews[index].Comment = model.Comment
+			}
+			if &model.Rating != nil {
+				rms.reviews[index].Rating = model.Rating
+			}
+			model = &rms.reviews[index]
 			return nil
 		}
 	}
@@ -101,14 +122,14 @@ func (rms *reviewMemoryStore) save(model *ReviewModel) error {
 	return nil
 }
 
-func (rms reviewMemoryStore) list() ([]ReviewModel, error) {
+func (rms ReviewMemoryStore) List() ([]ReviewModel, error) {
 	if len(rms.reviews) == 0 {
 		return rms.reviews, errors.New("No reviews found")
 	}
 	return rms.reviews, nil
 }
 
-func (rms reviewMemoryStore) find(id string) (*ReviewModel, error) {
+func (rms ReviewMemoryStore) Find(id string) (*ReviewModel, error) {
 	for _, record := range rms.reviews {
 		if record.ID.String() == id {
 			return &record, nil
@@ -117,7 +138,7 @@ func (rms reviewMemoryStore) find(id string) (*ReviewModel, error) {
 	return nil, errors.New("Review not found")
 }
 
-func (rms *reviewMemoryStore) delete(id string) error {
+func (rms *ReviewMemoryStore) Delete(id string) error {
 	for index, record := range rms.reviews {
 		if record.ID.String() == id {
 			rms.reviews[index] = rms.reviews[len(rms.reviews)-1]
