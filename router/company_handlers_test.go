@@ -57,12 +57,12 @@ func TestListCompanies(t *testing.T) {
 
 	id := uuid.NewV4().String()
 	cm := &storage.CompanyModel{
-		ID:        uuid.FromStringOrNil(id),
-		UserID:    uuid.NewV4().String(),
-		Name:      "Company One",
-		Email:     "company@domain.com",
-		Logo:      "https://proddx.com/company-one/logo.png",
-		CreatedAt: time.Now(),
+		ID:            uuid.FromStringOrNil(id),
+		CompanyUserID: uuid.NewV4().String(),
+		CompanyName:   "Company One",
+		Email:         "company@domain.com",
+		Logo:          "https://proddx.com/company-one/logo.png",
+		CreatedAt:     time.Now(),
 	}
 	if err := companyStore.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
@@ -96,12 +96,12 @@ func TestFindCompany(t *testing.T) {
 
 	id := uuid.NewV4().String()
 	cm := &storage.CompanyModel{
-		ID:        uuid.FromStringOrNil(id),
-		UserID:    uuid.NewV4().String(),
-		Name:      "Company One",
-		Email:     "company@domain.com",
-		Logo:      "https://proddx.com/company-one/logo.png",
-		CreatedAt: time.Now(),
+		ID:            uuid.FromStringOrNil(id),
+		CompanyUserID: uuid.NewV4().String(),
+		CompanyName:   "Company One",
+		Email:         "company@domain.com",
+		Logo:          "https://proddx.com/company-one/logo.png",
+		CreatedAt:     time.Now(),
 	}
 	if err := companyStore.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
@@ -136,12 +136,12 @@ func TestUpdateCompany(t *testing.T) {
 
 	id := uuid.NewV4().String()
 	cm := &storage.CompanyModel{
-		ID:        uuid.FromStringOrNil(id),
-		UserID:    uuid.NewV4().String(),
-		Name:      "Company One",
-		Email:     "company@domain.com",
-		Logo:      "https://proddx.com/company-one/logo.png",
-		CreatedAt: time.Now(),
+		ID:            uuid.FromStringOrNil(id),
+		CompanyUserID: uuid.NewV4().String(),
+		CompanyName:   "Company One",
+		Email:         "company@domain.com",
+		Logo:          "https://proddx.com/company-one/logo.png",
+		CreatedAt:     time.Now(),
 	}
 	if err := companyStore.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
@@ -184,12 +184,12 @@ func TestDeleteCompany(t *testing.T) {
 
 	id := uuid.NewV4().String()
 	cm := &storage.CompanyModel{
-		ID:        uuid.FromStringOrNil(id),
-		UserID:    uuid.NewV4().String(),
-		Name:      "Company One",
-		Email:     "company@domain.com",
-		Logo:      "https://proddx.com/company-one/logo.png",
-		CreatedAt: time.Now(),
+		ID:            uuid.FromStringOrNil(id),
+		CompanyUserID: uuid.NewV4().String(),
+		CompanyName:   "Company One",
+		Email:         "company@domain.com",
+		Logo:          "https://proddx.com/company-one/logo.png",
+		CreatedAt:     time.Now(),
 	}
 	if err := companyStore.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())

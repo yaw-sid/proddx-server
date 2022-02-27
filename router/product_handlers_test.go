@@ -58,7 +58,7 @@ func TestListProducts(t *testing.T) {
 	pm := &storage.ProductModel{
 		ID:          uuid.FromStringOrNil(id),
 		CompanyID:   uuid.NewV4(),
-		Name:        "Product One",
+		ProductName: "Product One",
 		FeedbackURL: "https://proddx.com/product-one/reviews",
 		Rating:      4,
 		CreatedAt:   time.Now(),
@@ -97,7 +97,7 @@ func TestFindProduct(t *testing.T) {
 	pm := &storage.ProductModel{
 		ID:          uuid.FromStringOrNil(id),
 		CompanyID:   uuid.NewV4(),
-		Name:        "Product One",
+		ProductName: "Product One",
 		FeedbackURL: "https://proddx.com/product-one/reviews",
 		Rating:      4,
 		CreatedAt:   time.Now(),
@@ -137,7 +137,7 @@ func TestUpdateProduct(t *testing.T) {
 	pm := &storage.ProductModel{
 		ID:          uuid.FromStringOrNil(id),
 		CompanyID:   uuid.NewV4(),
-		Name:        "Product One",
+		ProductName: "Product One",
 		FeedbackURL: "https://proddx.com/product-one/reviews",
 		Rating:      4,
 		CreatedAt:   time.Now(),
@@ -171,8 +171,8 @@ func TestUpdateProduct(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	if res.Name != record.Name {
-		t.Errorf("Error: %s: %s - %s", "Record Name inconsistency", res.Name, record.Name)
+	if res.Name != record.ProductName {
+		t.Errorf("Error: %s: %s - %s", "Record Name inconsistency", res.Name, record.ProductName)
 	}
 }
 
@@ -185,7 +185,7 @@ func TestDeleteProduct(t *testing.T) {
 	pm := &storage.ProductModel{
 		ID:          uuid.FromStringOrNil(id),
 		CompanyID:   uuid.NewV4(),
-		Name:        "Product One",
+		ProductName: "Product One",
 		FeedbackURL: "https://proddx.com/product-one/reviews",
 		Rating:      4,
 		CreatedAt:   time.Now(),

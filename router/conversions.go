@@ -7,20 +7,20 @@ import (
 
 func companyToStorage(c *company) *storage.CompanyModel {
 	return &storage.CompanyModel{
-		ID:        uuid.FromStringOrNil(c.ID),
-		UserID:    c.UserID,
-		Name:      c.Name,
-		Email:     c.Email,
-		Logo:      c.Logo,
-		CreatedAt: c.CreatedAt,
+		ID:            uuid.FromStringOrNil(c.ID),
+		CompanyUserID: c.UserID,
+		CompanyName:   c.Name,
+		Email:         c.Email,
+		Logo:          c.Logo,
+		CreatedAt:     c.CreatedAt,
 	}
 }
 
 func companyFromStorage(model *storage.CompanyModel) *company {
 	return &company{
 		ID:        model.ID.String(),
-		UserID:    model.UserID,
-		Name:      model.Name,
+		UserID:    model.CompanyUserID,
+		Name:      model.CompanyName,
 		Email:     model.Email,
 		Logo:      model.Logo,
 		CreatedAt: model.CreatedAt,
@@ -40,7 +40,7 @@ func productToStorage(p *product) *storage.ProductModel {
 	return &storage.ProductModel{
 		ID:          uuid.FromStringOrNil(p.ID),
 		CompanyID:   uuid.FromStringOrNil(p.CompanyID),
-		Name:        p.Name,
+		ProductName: p.Name,
 		FeedbackURL: p.FeedbackURL,
 		Rating:      p.Rating,
 		CreatedAt:   p.CreatedAt,
@@ -51,7 +51,7 @@ func productFromStorage(model *storage.ProductModel) *product {
 	return &product{
 		ID:          model.ID.String(),
 		CompanyID:   model.CompanyID.String(),
-		Name:        model.Name,
+		Name:        model.ProductName,
 		FeedbackURL: model.FeedbackURL,
 		Rating:      model.Rating,
 		CreatedAt:   model.CreatedAt,

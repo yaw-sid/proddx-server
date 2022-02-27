@@ -9,8 +9,8 @@ type CompanyMemoryStore struct {
 func (cms *CompanyMemoryStore) Save(model *CompanyModel) error {
 	for index, record := range cms.companies {
 		if record.ID == model.ID {
-			if &model.Name != nil {
-				cms.companies[index].Name = model.Name
+			if &model.CompanyName != nil {
+				cms.companies[index].CompanyName = model.CompanyName
 			}
 			if &model.Email != nil {
 				cms.companies[index].Email = model.Email
@@ -60,8 +60,8 @@ type ProductMemoryStore struct {
 func (pms *ProductMemoryStore) Save(model *ProductModel) error {
 	for index, record := range pms.products {
 		if record.ID == model.ID {
-			if &model.Name != nil {
-				pms.products[index].Name = model.Name
+			if &model.ProductName != nil {
+				pms.products[index].ProductName = model.ProductName
 			}
 			if &model.Rating != nil {
 				pms.products[index].Rating = model.Rating

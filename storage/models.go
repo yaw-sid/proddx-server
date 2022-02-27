@@ -7,18 +7,18 @@ import (
 )
 
 type CompanyModel struct {
-	ID        uuid.UUID
-	UserID    string
-	Name      string
-	Email     string
-	Logo      string
-	CreatedAt time.Time
+	ID            uuid.UUID
+	CompanyUserID string
+	CompanyName   string
+	Email         string
+	Logo          string
+	CreatedAt     time.Time
 }
 
 type ProductModel struct {
 	ID          uuid.UUID
 	CompanyID   uuid.UUID
-	Name        string
+	ProductName string
 	FeedbackURL string
 	Rating      uint
 	CreatedAt   time.Time

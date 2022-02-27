@@ -10,12 +10,12 @@ import (
 func TestCompanyMemorySave(t *testing.T) {
 	id := uuid.NewV4().String()
 	cm := &CompanyModel{
-		ID:        uuid.FromStringOrNil(id),
-		UserID:    uuid.NewV4().String(),
-		Name:      "Company One",
-		Email:     "company@domain.com",
-		Logo:      "https://proddx.com/company-one/logo.png",
-		CreatedAt: time.Now(),
+		ID:            uuid.FromStringOrNil(id),
+		CompanyUserID: uuid.NewV4().String(),
+		CompanyName:   "Company One",
+		Email:         "company@domain.com",
+		Logo:          "https://proddx.com/company-one/logo.png",
+		CreatedAt:     time.Now(),
 	}
 	storage := new(CompanyMemoryStore)
 	if err := storage.Save(cm); err != nil {
@@ -29,12 +29,12 @@ func TestCompanyMemorySave(t *testing.T) {
 func TestCompanyMemoryList(t *testing.T) {
 	id := uuid.NewV4().String()
 	cm := &CompanyModel{
-		ID:        uuid.FromStringOrNil(id),
-		UserID:    uuid.NewV4().String(),
-		Name:      "Company One",
-		Email:     "company@domain.com",
-		Logo:      "https://proddx.com/company-one/logo.png",
-		CreatedAt: time.Now(),
+		ID:            uuid.FromStringOrNil(id),
+		CompanyUserID: uuid.NewV4().String(),
+		CompanyName:   "Company One",
+		Email:         "company@domain.com",
+		Logo:          "https://proddx.com/company-one/logo.png",
+		CreatedAt:     time.Now(),
 	}
 	storage := new(CompanyMemoryStore)
 	if err := storage.Save(cm); err != nil {
@@ -52,12 +52,12 @@ func TestCompanyMemoryList(t *testing.T) {
 func TestCompanyMemoryFind(t *testing.T) {
 	id := uuid.NewV4().String()
 	cm := &CompanyModel{
-		ID:        uuid.FromStringOrNil(id),
-		UserID:    uuid.NewV4().String(),
-		Name:      "Company One",
-		Email:     "company@domain.com",
-		Logo:      "https://proddx.com/company-one/logo.png",
-		CreatedAt: time.Now(),
+		ID:            uuid.FromStringOrNil(id),
+		CompanyUserID: uuid.NewV4().String(),
+		CompanyName:   "Company One",
+		Email:         "company@domain.com",
+		Logo:          "https://proddx.com/company-one/logo.png",
+		CreatedAt:     time.Now(),
 	}
 	storage := new(CompanyMemoryStore)
 	if err := storage.Save(cm); err != nil {
@@ -75,12 +75,12 @@ func TestCompanyMemoryFind(t *testing.T) {
 func TestCompanyMemoryDelete(t *testing.T) {
 	id := uuid.NewV4().String()
 	cm := &CompanyModel{
-		ID:        uuid.FromStringOrNil(id),
-		UserID:    uuid.NewV4().String(),
-		Name:      "Company One",
-		Email:     "company@domain.com",
-		Logo:      "https://proddx.com/company-one/logo.png",
-		CreatedAt: time.Now(),
+		ID:            uuid.FromStringOrNil(id),
+		CompanyUserID: uuid.NewV4().String(),
+		CompanyName:   "Company One",
+		Email:         "company@domain.com",
+		Logo:          "https://proddx.com/company-one/logo.png",
+		CreatedAt:     time.Now(),
 	}
 	storage := new(CompanyMemoryStore)
 	if err := storage.Save(cm); err != nil {
@@ -99,7 +99,7 @@ func TestProductMemorySave(t *testing.T) {
 	pm := &ProductModel{
 		ID:          uuid.FromStringOrNil(id),
 		CompanyID:   uuid.NewV4(),
-		Name:        "Product One",
+		ProductName: "Product One",
 		FeedbackURL: "https://proddx.com/products/111/reviews",
 		Rating:      4,
 		CreatedAt:   time.Now(),
@@ -118,7 +118,7 @@ func TestProductMemoryList(t *testing.T) {
 	pm := &ProductModel{
 		ID:          uuid.FromStringOrNil(id),
 		CompanyID:   uuid.NewV4(),
-		Name:        "Product One",
+		ProductName: "Product One",
 		FeedbackURL: "https://proddx.com/products/111/reviews",
 		Rating:      4,
 		CreatedAt:   time.Now(),
@@ -141,7 +141,7 @@ func TestProductMemoryFind(t *testing.T) {
 	pm := &ProductModel{
 		ID:          uuid.FromStringOrNil(id),
 		CompanyID:   uuid.NewV4(),
-		Name:        "Product One",
+		ProductName: "Product One",
 		FeedbackURL: "https://proddx.com/products/111/reviews",
 		Rating:      4,
 		CreatedAt:   time.Now(),
@@ -165,7 +165,7 @@ func TestProductMemoryDelete(t *testing.T) {
 	pm := &ProductModel{
 		ID:          uuid.FromStringOrNil(id),
 		CompanyID:   uuid.NewV4(),
-		Name:        "Product One",
+		ProductName: "Product One",
 		FeedbackURL: "https://proddx.com/products/111/reviews",
 		Rating:      4,
 		CreatedAt:   time.Now(),
