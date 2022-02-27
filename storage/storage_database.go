@@ -8,22 +8,22 @@ import (
 )
 
 type CompanyDatabase struct {
-	conn *pgx.Conn
+	Conn *pgx.Conn
 }
 
 func (cb CompanyDatabase) Save(model *CompanyModel) error {
-	row := cb.conn.QueryRow(context.Background(), "select * from companies where id=$1", model.ID.String())
+	row := cb.Conn.QueryRow(context.Background(), "select * from companies where id=$1", model.ID.String())
 	if row.Scan() == pgx.ErrNoRows {
-		_, err := cb.conn.Exec(context.Background(), "insert into companies(id, company_user_id, company_name, email, logo, created_at) values($1, $2, $3, $4, $5, $6)",
+		_, err := cb.Conn.Exec(context.Background(), "insert into companies(id, company_user_id, company_name, email, logo, created_at) values($1, $2, $3, $4, $5, $6)",
 			model.ID.String(), model.CompanyUserID, model.CompanyName, model.Email, model.Logo, model.CreatedAt)
 		return err
 	}
-	_, err := cb.conn.Exec(context.Background(), "update companies set company_name=$2, email=$3, logo=$4 where id=$1", model.ID.String(), model.CompanyName, model.Email, model.Logo)
+	_, err := cb.Conn.Exec(context.Background(), "update companies set company_name=$2, email=$3, logo=$4 where id=$1", model.ID.String(), model.CompanyName, model.Email, model.Logo)
 	return err
 }
 
 func (cb CompanyDatabase) List() ([]CompanyModel, error) {
-	rows, err := cb.conn.Query(context.Background(), "select * from companies")
+	rows, err := cb.Conn.Query(context.Background(), "select * from companies")
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (cb CompanyDatabase) List() ([]CompanyModel, error) {
 }
 
 func (cb CompanyDatabase) Find(id string) (*CompanyModel, error) {
-	row := cb.conn.QueryRow(context.Background(), "select * from companies where id=$1", id)
+	row := cb.Conn.QueryRow(context.Background(), "select * from companies where id=$1", id)
 	var uid string
 	var model CompanyModel
 	err := row.Scan(&uid, &model.CompanyUserID, &model.CompanyName, &model.Email, &model.Logo, &model.CreatedAt)
@@ -54,27 +54,27 @@ func (cb CompanyDatabase) Find(id string) (*CompanyModel, error) {
 }
 
 func (cb CompanyDatabase) Delete(id string) error {
-	_, err := cb.conn.Exec(context.Background(), "delete from companies where id=$1", id)
+	_, err := cb.Conn.Exec(context.Background(), "delete from companies where id=$1", id)
 	return err
 }
 
 type ProductDatabase struct {
-	conn *pgx.Conn
+	Conn *pgx.Conn
 }
 
 func (cb ProductDatabase) Save(model *ProductModel) error {
-	row := cb.conn.QueryRow(context.Background(), "select * from products where id=$1", model.ID.String())
+	row := cb.Conn.QueryRow(context.Background(), "select * from products where id=$1", model.ID.String())
 	if row.Scan() == pgx.ErrNoRows {
-		_, err := cb.conn.Exec(context.Background(), "insert into products(id, company_id, product_name, feedback_url, rating, created_at) values($1, $2, $3, $4, $5, $6)",
+		_, err := cb.Conn.Exec(context.Background(), "insert into products(id, company_id, product_name, feedback_url, rating, created_at) values($1, $2, $3, $4, $5, $6)",
 			model.ID.String(), model.CompanyID.String(), model.ProductName, model.FeedbackURL, model.Rating, model.CreatedAt)
 		return err
 	}
-	_, err := cb.conn.Exec(context.Background(), "update products set product_name=$2, feedback_url=$3, rating=$4 where id=$1", model.ID.String(), model.ProductName, model.FeedbackURL, model.Rating)
+	_, err := cb.Conn.Exec(context.Background(), "update products set product_name=$2, feedback_url=$3, rating=$4 where id=$1", model.ID.String(), model.ProductName, model.FeedbackURL, model.Rating)
 	return err
 }
 
 func (cb ProductDatabase) List() ([]ProductModel, error) {
-	rows, err := cb.conn.Query(context.Background(), "select * from products")
+	rows, err := cb.Conn.Query(context.Background(), "select * from products")
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +95,7 @@ func (cb ProductDatabase) List() ([]ProductModel, error) {
 }
 
 func (cb ProductDatabase) Find(id string) (*ProductModel, error) {
-	row := cb.conn.QueryRow(context.Background(), "select * from products where id=$1", id)
+	row := cb.Conn.QueryRow(context.Background(), "select * from products where id=$1", id)
 	var uid string
 	var companyID string
 	var model ProductModel
@@ -109,27 +109,27 @@ func (cb ProductDatabase) Find(id string) (*ProductModel, error) {
 }
 
 func (cb ProductDatabase) Delete(id string) error {
-	_, err := cb.conn.Exec(context.Background(), "delete from products where id=$1", id)
+	_, err := cb.Conn.Exec(context.Background(), "delete from products where id=$1", id)
 	return err
 }
 
 type ReviewDatabase struct {
-	conn *pgx.Conn
+	Conn *pgx.Conn
 }
 
 func (cb ReviewDatabase) Save(model *ReviewModel) error {
-	row := cb.conn.QueryRow(context.Background(), "select * from reviews where id=$1", model.ID.String())
+	row := cb.Conn.QueryRow(context.Background(), "select * from reviews where id=$1", model.ID.String())
 	if row.Scan() == pgx.ErrNoRows {
-		_, err := cb.conn.Exec(context.Background(), "insert into reviews(id, company_id, product_id, comment, rating, created_at) values($1, $2, $3, $4, $5, $6)",
+		_, err := cb.Conn.Exec(context.Background(), "insert into reviews(id, company_id, product_id, comment, rating, created_at) values($1, $2, $3, $4, $5, $6)",
 			model.ID.String(), model.CompanyID.String(), model.ProductID.String(), model.Comment, model.Rating, model.CreatedAt)
 		return err
 	}
-	_, err := cb.conn.Exec(context.Background(), "update reviews set comment=$2, rating=$3 where id=$1", model.ID.String(), model.Comment, model.Rating)
+	_, err := cb.Conn.Exec(context.Background(), "update reviews set comment=$2, rating=$3 where id=$1", model.ID.String(), model.Comment, model.Rating)
 	return err
 }
 
 func (cb ReviewDatabase) List() ([]ReviewModel, error) {
-	rows, err := cb.conn.Query(context.Background(), "select * from reviews")
+	rows, err := cb.Conn.Query(context.Background(), "select * from reviews")
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +152,7 @@ func (cb ReviewDatabase) List() ([]ReviewModel, error) {
 }
 
 func (cb ReviewDatabase) Find(id string) (*ReviewModel, error) {
-	row := cb.conn.QueryRow(context.Background(), "select * from reviews where id=$1", id)
+	row := cb.Conn.QueryRow(context.Background(), "select * from reviews where id=$1", id)
 	var uid string
 	var companyID string
 	var productID string
@@ -168,6 +168,6 @@ func (cb ReviewDatabase) Find(id string) (*ReviewModel, error) {
 }
 
 func (cb ReviewDatabase) Delete(id string) error {
-	_, err := cb.conn.Exec(context.Background(), "delete from reviews where id=$1", id)
+	_, err := cb.Conn.Exec(context.Background(), "delete from reviews where id=$1", id)
 	return err
 }

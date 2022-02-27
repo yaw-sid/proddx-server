@@ -23,7 +23,7 @@ func TestCompanyDatabaseSave(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	storage := &CompanyDatabase{conn: conn}
+	storage := &CompanyDatabase{Conn: conn}
 	if err = storage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -49,7 +49,7 @@ func TestCompanyDatabaseList(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	storage := &CompanyDatabase{conn: conn}
+	storage := &CompanyDatabase{Conn: conn}
 	if err = storage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -79,7 +79,7 @@ func TestCompanyDatabaseFind(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	storage := &CompanyDatabase{conn: conn}
+	storage := &CompanyDatabase{Conn: conn}
 	if err = storage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -109,7 +109,7 @@ func TestCompanyDatabaseDelete(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	storage := &CompanyDatabase{conn: conn}
+	storage := &CompanyDatabase{Conn: conn}
 	if err = storage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -144,11 +144,11 @@ func TestProductDatabaseSave(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{conn: conn}
+	companyStorage := &CompanyDatabase{Conn: conn}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{conn: conn}
+	productStorage := &ProductDatabase{Conn: conn}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -186,11 +186,11 @@ func TestProductDatabaseList(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{conn: conn}
+	companyStorage := &CompanyDatabase{Conn: conn}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{conn: conn}
+	productStorage := &ProductDatabase{Conn: conn}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -232,11 +232,11 @@ func TestProductDatabaseFind(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{conn: conn}
+	companyStorage := &CompanyDatabase{Conn: conn}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{conn: conn}
+	productStorage := &ProductDatabase{Conn: conn}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -278,11 +278,11 @@ func TestProductDatabaseDelete(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{conn: conn}
+	companyStorage := &CompanyDatabase{Conn: conn}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{conn: conn}
+	productStorage := &ProductDatabase{Conn: conn}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -329,15 +329,15 @@ func TestReviewDatabaseSave(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{conn: conn}
+	companyStorage := &CompanyDatabase{Conn: conn}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{conn: conn}
+	productStorage := &ProductDatabase{Conn: conn}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	reviewStorage := &ReviewDatabase{conn: conn}
+	reviewStorage := &ReviewDatabase{Conn: conn}
 	if err = reviewStorage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -387,15 +387,15 @@ func TestReviewDatabaseList(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{conn: conn}
+	companyStorage := &CompanyDatabase{Conn: conn}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{conn: conn}
+	productStorage := &ProductDatabase{Conn: conn}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	reviewStorage := &ReviewDatabase{conn: conn}
+	reviewStorage := &ReviewDatabase{Conn: conn}
 	if err = reviewStorage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -449,15 +449,15 @@ func TestReviewDatabaseFind(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{conn: conn}
+	companyStorage := &CompanyDatabase{Conn: conn}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{conn: conn}
+	productStorage := &ProductDatabase{Conn: conn}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	reviewStorage := &ReviewDatabase{conn: conn}
+	reviewStorage := &ReviewDatabase{Conn: conn}
 	if err = reviewStorage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -511,15 +511,15 @@ func TestReviewDatabaseDelete(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{conn: conn}
+	companyStorage := &CompanyDatabase{Conn: conn}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{conn: conn}
+	productStorage := &ProductDatabase{Conn: conn}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	reviewStorage := &ReviewDatabase{conn: conn}
+	reviewStorage := &ReviewDatabase{Conn: conn}
 	if err = reviewStorage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}

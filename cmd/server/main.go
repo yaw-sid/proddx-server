@@ -9,6 +9,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 
@@ -21,14 +22,20 @@ import (
 	//
 	sw "api.proddx.com/router"
 	"api.proddx.com/storage"
+	"github.com/jackc/pgx/v4"
 )
 
 func main() {
 	log.Printf("Server started")
 
-	companyStore := new(storage.CompanyMemoryStore)
-	productStore := new(storage.ProductMemoryStore)
-	reviewStore := new(storage.ReviewMemoryStore)
+	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %s", err.Error())
+	}
+
+	companyStore := &storage.CompanyDatabase{Conn: conn}
+	productStore := &storage.ProductDatabase{Conn: conn}
+	reviewStore := &storage.ReviewDatabase{Conn: conn}
 
 	router := sw.New(companyStore, productStore, reviewStore)
 
