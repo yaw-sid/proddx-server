@@ -40,5 +40,5 @@ func main() {
 
 	router := sw.New(userStore, companyStore, productStore, reviewStore)
 
-	log.Fatal(http.ListenAndServe(":3000", router))
+	log.Fatal(http.ListenAndServe(":5000", router))
 }
