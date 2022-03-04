@@ -5,6 +5,31 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+func userToStorage(u *user) *storage.UserModel {
+	return &storage.UserModel{
+		ID:           uuid.FromStringOrNil(u.ID),
+		Email:        u.Email,
+		UserPassword: u.Password,
+		CreatedAt:    u.CreatedAt,
+	}
+}
+
+func userFromStorage(model *storage.UserModel) *user {
+	return &user{
+		ID:        model.ID.String(),
+		Email:     model.Email,
+		Password:  model.UserPassword,
+		CreatedAt: model.CreatedAt,
+	}
+}
+
+func userFromTransport(req *registrationRequest) *user {
+	return &user{
+		Email:    req.Email,
+		Password: req.Password,
+	}
+}
+
 func companyToStorage(c *company) *storage.CompanyModel {
 	return &storage.CompanyModel{
 		ID:            uuid.FromStringOrNil(c.ID),

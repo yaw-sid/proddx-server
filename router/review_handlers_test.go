@@ -25,13 +25,14 @@ func TestInsertReview(t *testing.T) {
 		t.Fatalf("Error: %s", err.Error())
 	}
 
+	userStore := new(storage.UserMemoryStore)
 	companyStore := new(storage.CompanyMemoryStore)
 	productStore := new(storage.ProductMemoryStore)
 	reviewStore := new(storage.ReviewMemoryStore)
 
 	w := httptest.NewRecorder()
 	r, _ := http.NewRequest(http.MethodPost, "/reviews", bytes.NewBuffer(reqJSON))
-	router := New(companyStore, productStore, reviewStore)
+	router := New(userStore, companyStore, productStore, reviewStore)
 	router.ServeHTTP(w, r)
 
 	if w.Code != http.StatusCreated {
@@ -51,6 +52,7 @@ func TestInsertReview(t *testing.T) {
 }
 
 func TestListReviews(t *testing.T) {
+	userStore := new(storage.UserMemoryStore)
 	companyStore := new(storage.CompanyMemoryStore)
 	productStore := new(storage.ProductMemoryStore)
 	reviewStore := new(storage.ReviewMemoryStore)
@@ -70,7 +72,7 @@ func TestListReviews(t *testing.T) {
 
 	w := httptest.NewRecorder()
 	r, _ := http.NewRequest(http.MethodGet, "/reviews", nil)
-	router := New(companyStore, productStore, reviewStore)
+	router := New(userStore, companyStore, productStore, reviewStore)
 	router.ServeHTTP(w, r)
 
 	if w.Code != http.StatusOK {
@@ -90,6 +92,7 @@ func TestListReviews(t *testing.T) {
 }
 
 func TestFindReview(t *testing.T) {
+	userStore := new(storage.UserMemoryStore)
 	companyStore := new(storage.CompanyMemoryStore)
 	productStore := new(storage.ProductMemoryStore)
 	reviewStore := new(storage.ReviewMemoryStore)
@@ -110,7 +113,7 @@ func TestFindReview(t *testing.T) {
 	route := fmt.Sprintf("/reviews/%s", id)
 	w := httptest.NewRecorder()
 	r, _ := http.NewRequest(http.MethodGet, route, nil)
-	router := New(companyStore, productStore, reviewStore)
+	router := New(userStore, companyStore, productStore, reviewStore)
 	router.ServeHTTP(w, r)
 
 	if w.Code != http.StatusOK {
@@ -130,6 +133,7 @@ func TestFindReview(t *testing.T) {
 }
 
 func TestUpdateReview(t *testing.T) {
+	userStore := new(storage.UserMemoryStore)
 	companyStore := new(storage.CompanyMemoryStore)
 	productStore := new(storage.ProductMemoryStore)
 	reviewStore := new(storage.ReviewMemoryStore)
@@ -158,7 +162,7 @@ func TestUpdateReview(t *testing.T) {
 	route := fmt.Sprintf("/reviews/%s", id)
 	w := httptest.NewRecorder()
 	r, _ := http.NewRequest(http.MethodPut, route, bytes.NewBuffer(reqJSON))
-	router := New(companyStore, productStore, reviewStore)
+	router := New(userStore, companyStore, productStore, reviewStore)
 	router.ServeHTTP(w, r)
 
 	if w.Code != http.StatusOK {
@@ -178,6 +182,7 @@ func TestUpdateReview(t *testing.T) {
 }
 
 func TestDeleteReview(t *testing.T) {
+	userStore := new(storage.UserMemoryStore)
 	companyStore := new(storage.CompanyMemoryStore)
 	productStore := new(storage.ProductMemoryStore)
 	reviewStore := new(storage.ReviewMemoryStore)
@@ -198,7 +203,7 @@ func TestDeleteReview(t *testing.T) {
 	route := fmt.Sprintf("/reviews/%s", id)
 	w := httptest.NewRecorder()
 	r, _ := http.NewRequest(http.MethodDelete, route, nil)
-	router := New(companyStore, productStore, reviewStore)
+	router := New(userStore, companyStore, productStore, reviewStore)
 	router.ServeHTTP(w, r)
 
 	if w.Code != http.StatusNoContent {

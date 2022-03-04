@@ -7,6 +7,33 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+type UserDatabase struct {
+	Conn *pgx.Conn
+}
+
+func (ub UserDatabase) Save(model *UserModel) error {
+	_, err := ub.Conn.Exec(context.Background(), "insert into users(id, email, user_password, created_at) values($1, $2, $3, $4)",
+		model.ID.String(), model.Email, model.UserPassword, model.CreatedAt)
+	return err
+}
+
+func (ub UserDatabase) Find(id string) (*UserModel, error) {
+	row := ub.Conn.QueryRow(context.Background(), "select * from users where id=$1 or email=$1", id)
+	var uid string
+	var model UserModel
+	err := row.Scan(&uid, &model.Email, &model.UserPassword, &model.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	model.ID = uuid.FromStringOrNil(uid)
+	return &model, nil
+}
+
+func (ub UserDatabase) Delete(id string) error {
+	_, err := ub.Conn.Exec(context.Background(), "delete from users where id=$1", id)
+	return err
+}
+
 type CompanyDatabase struct {
 	Conn *pgx.Conn
 }
@@ -42,7 +69,7 @@ func (cb CompanyDatabase) List() ([]CompanyModel, error) {
 }
 
 func (cb CompanyDatabase) Find(id string) (*CompanyModel, error) {
-	row := cb.Conn.QueryRow(context.Background(), "select * from companies where id=$1", id)
+	row := cb.Conn.QueryRow(context.Background(), "select * from companies where id=$1 or company_user_id=$1", id)
 	var uid string
 	var model CompanyModel
 	err := row.Scan(&uid, &model.CompanyUserID, &model.CompanyName, &model.Email, &model.Logo, &model.CreatedAt)

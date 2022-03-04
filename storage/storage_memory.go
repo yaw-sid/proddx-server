@@ -2,6 +2,40 @@ package storage
 
 import "errors"
 
+type UserMemoryStore struct {
+	users []UserModel
+}
+
+func (ums *UserMemoryStore) Save(model *UserModel) error {
+	for _, record := range ums.users {
+		if record.ID == model.ID {
+			return errors.New("User already exists")
+		}
+	}
+	ums.users = append(ums.users, *model)
+	return nil
+}
+
+func (ums UserMemoryStore) Find(id string) (*UserModel, error) {
+	for _, record := range ums.users {
+		if record.ID.String() == id || record.Email == id {
+			return &record, nil
+		}
+	}
+	return nil, errors.New("User not found")
+}
+
+func (ums *UserMemoryStore) Delete(id string) error {
+	for index, record := range ums.users {
+		if record.ID.String() == id {
+			ums.users[index] = ums.users[len(ums.users)-1]
+			ums.users = ums.users[:len(ums.users)-1]
+			return nil
+		}
+	}
+	return errors.New("User not found")
+}
+
 type CompanyMemoryStore struct {
 	companies []CompanyModel
 }

@@ -33,11 +33,12 @@ func main() {
 		log.Fatalf("Failed to connect to database: %s", err.Error())
 	}
 
+	userStore := &storage.UserDatabase{Conn: conn}
 	companyStore := &storage.CompanyDatabase{Conn: conn}
 	productStore := &storage.ProductDatabase{Conn: conn}
 	reviewStore := &storage.ReviewDatabase{Conn: conn}
 
-	router := sw.New(companyStore, productStore, reviewStore)
+	router := sw.New(userStore, companyStore, productStore, reviewStore)
 
 	log.Fatal(http.ListenAndServe(":3000", router))
 }

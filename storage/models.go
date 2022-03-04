@@ -6,6 +6,13 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+type UserModel struct {
+	ID           uuid.UUID
+	Email        string
+	UserPassword string
+	CreatedAt    time.Time
+}
+
 type CompanyModel struct {
 	ID            uuid.UUID
 	CompanyUserID string

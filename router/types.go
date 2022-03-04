@@ -2,6 +2,17 @@ package router
 
 import "time"
 
+type loginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type registrationRequest struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type companyRequest struct {
 	UserID string `json:"user_id,omitempty"`
 	Name   string `json:"name,omitempty"`
@@ -20,6 +31,13 @@ type reviewRequest struct {
 	ProductID string `json:"product_id,omitempty"`
 	Comment   string `json:"comment,omitempty"`
 	Rating    uint   `json:"rating,omitempty"`
+}
+
+type user struct {
+	ID        string    `json:"id"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
 }
 
 type company struct {

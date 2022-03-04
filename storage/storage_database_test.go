@@ -9,6 +9,82 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+func TestUserDatabaseSave(t *testing.T) {
+	userID := uuid.NewV4().String()
+	um := &UserModel{
+		ID:           uuid.FromStringOrNil(userID),
+		Email:        "user@domain.com",
+		UserPassword: "password",
+		CreatedAt:    time.Now(),
+	}
+	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	if err != nil {
+		t.Fatalf("Failed to connect to database: %s", err.Error())
+	}
+	storage := &UserDatabase{Conn: conn}
+	if err = storage.Save(um); err != nil {
+		t.Fatalf("Error: %s", err.Error())
+	}
+	if _, err := storage.Find(userID); err != nil {
+		t.Errorf("Error: %s", err.Error())
+	}
+	if err = storage.Delete(userID); err != nil {
+		t.Fatalf("Error: %s", err.Error())
+	}
+}
+
+func TestUserDatabaseFind(t *testing.T) {
+	userID := uuid.NewV4().String()
+	um := &UserModel{
+		ID:           uuid.FromStringOrNil(userID),
+		Email:        "user@domain.com",
+		UserPassword: "password",
+		CreatedAt:    time.Now(),
+	}
+	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	if err != nil {
+		t.Fatalf("Failed to connect to database: %s", err.Error())
+	}
+	storage := &UserDatabase{Conn: conn}
+	if err = storage.Save(um); err != nil {
+		t.Fatalf("Error: %s", err.Error())
+	}
+	record, err := storage.Find(userID)
+	if err != nil {
+		t.Errorf("Error: %s", err.Error())
+	}
+	if record.ID != um.ID {
+		t.Errorf("Error: Record ID inconsistency: %s - %s", record.ID.String(), um.ID.String())
+	}
+	if err = storage.Delete(userID); err != nil {
+		t.Fatalf("Error: %s", err.Error())
+	}
+}
+
+func TestUserDatabaseDelete(t *testing.T) {
+	userID := uuid.NewV4().String()
+	um := &UserModel{
+		ID:           uuid.FromStringOrNil(userID),
+		Email:        "user@domain.com",
+		UserPassword: "password",
+		CreatedAt:    time.Now(),
+	}
+	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	if err != nil {
+		t.Fatalf("Failed to connect to database: %s", err.Error())
+	}
+	storage := &UserDatabase{Conn: conn}
+	if err = storage.Save(um); err != nil {
+		t.Fatalf("Error: %s", err.Error())
+	}
+	if err = storage.Delete(userID); err != nil {
+		t.Fatalf("Error: %s", err.Error())
+	}
+	if _, err := storage.Find(userID); err == nil {
+		t.Errorf("Error: %s", "Record was not deleted")
+	}
+}
+
 func TestCompanyDatabaseSave(t *testing.T) {
 	id := uuid.NewV4().String()
 	cm := &CompanyModel{

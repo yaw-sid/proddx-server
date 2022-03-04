@@ -7,6 +7,64 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+func TestUserMemorySave(t *testing.T) {
+	id := uuid.NewV4().String()
+	um := &UserModel{
+		ID:           uuid.FromStringOrNil(id),
+		Email:        "user@domain.com",
+		UserPassword: "password",
+		CreatedAt:    time.Now(),
+	}
+	storage := new(UserMemoryStore)
+	if err := storage.Save(um); err != nil {
+		t.Fatalf("Error: %s", err.Error())
+	}
+	if _, err := storage.Find(id); err != nil {
+		t.Errorf("Error: %s", err.Error())
+	}
+}
+
+func TestUserMemoryFind(t *testing.T) {
+	id := uuid.NewV4().String()
+	um := &UserModel{
+		ID:           uuid.FromStringOrNil(id),
+		Email:        "user@domain.com",
+		UserPassword: "password",
+		CreatedAt:    time.Now(),
+	}
+	storage := new(UserMemoryStore)
+	if err := storage.Save(um); err != nil {
+		t.Fatalf("Error: %s", err.Error())
+	}
+	record, err := storage.Find(id)
+	if err != nil {
+		t.Fatalf("Error: %s", err.Error())
+	}
+	if um.ID != record.ID {
+		t.Errorf("Error: Record ID inconsistency: %s - %s", um.ID.String(), record.ID.String())
+	}
+}
+
+func TestUserMemoryDelete(t *testing.T) {
+	id := uuid.NewV4().String()
+	um := &UserModel{
+		ID:           uuid.FromStringOrNil(id),
+		Email:        "user@domain.com",
+		UserPassword: "password",
+		CreatedAt:    time.Now(),
+	}
+	storage := new(UserMemoryStore)
+	if err := storage.Save(um); err != nil {
+		t.Fatalf("Error: %s", err.Error())
+	}
+	if err := storage.Delete(id); err != nil {
+		t.Fatalf("Error: %s", err.Error())
+	}
+	if _, err := storage.Find(id); err == nil {
+		t.Errorf("Error: %s", err.Error())
+	}
+}
+
 func TestCompanyMemorySave(t *testing.T) {
 	id := uuid.NewV4().String()
 	cm := &CompanyModel{

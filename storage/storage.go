@@ -1,5 +1,11 @@
 package storage
 
+type User interface {
+	Save(*UserModel) error
+	Find(string) (*UserModel, error)
+	Delete(string) error
+}
+
 type Company interface {
 	Save(*CompanyModel) error
 	List() ([]CompanyModel, error)
