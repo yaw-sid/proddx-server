@@ -20,14 +20,15 @@ func insertProduct(storage storage.Product) http.HandlerFunc {
 			return
 		}
 
-		if req.CompanyID == "" || req.Name == "" || req.FeedbackURL == "" {
-			fmt.Println("Error: company_id, name and feedback_url are required")
+		if req.CompanyID == "" || req.Name == "" {
+			fmt.Println("Error: company_id and name are required")
 			http.Error(w, "company_id, name and feedback_url are required", http.StatusBadRequest)
 			return
 		}
 
 		prod := productFromTransport(req)
 		prod.ID = uuid.NewV4().String()
+		prod.FeedbackURL = fmt.Sprintf("https://review.proddx.com/%s", prod.ID)
 		prod.Rating = 0
 		prod.CreatedAt = time.Now()
 		model := productToStorage(prod)

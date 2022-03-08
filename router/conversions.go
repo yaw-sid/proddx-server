@@ -85,9 +85,8 @@ func productFromStorage(model *storage.ProductModel) *product {
 
 func productFromTransport(req *productRequest) *product {
 	return &product{
-		CompanyID:   req.CompanyID,
-		Name:        req.Name,
-		FeedbackURL: req.FeedbackURL,
+		CompanyID: req.CompanyID,
+		Name:      req.Name,
 	}
 }
 
