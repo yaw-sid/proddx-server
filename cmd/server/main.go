@@ -28,10 +28,13 @@ import (
 func main() {
 	log.Printf("Server started")
 
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	ctx := context.Background()
+
+	conn, err := pgx.Connect(ctx, "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %s", err.Error())
 	}
+	defer conn.Close(ctx)
 
 	userStore := &storage.UserDatabase{Conn: conn}
 	companyStore := &storage.CompanyDatabase{Conn: conn}
