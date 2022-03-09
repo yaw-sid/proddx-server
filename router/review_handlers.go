@@ -15,7 +15,7 @@ func insertReview(storage storage.Review) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		req := new(reviewRequest)
 		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Marshalling error:", err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -31,7 +31,7 @@ func insertReview(storage storage.Review) http.HandlerFunc {
 		rev.CreatedAt = time.Now()
 		model := reviewToStorage(rev)
 		if err := storage.Save(model); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
 			return
 		}
@@ -46,7 +46,7 @@ func listReviews(storage storage.Review) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		records, err := storage.List()
 		if err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusNotFound)
 			return
 		}
@@ -70,14 +70,14 @@ func findReview(storage storage.Review) http.HandlerFunc {
 		params := httprouter.ParamsFromContext(r.Context())
 		id := params.ByName("id")
 		if _, err := uuid.FromString(id); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("ID Error:", err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		record, err := storage.Find(id)
 		if err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusNotFound)
 			return
 		}
@@ -93,14 +93,14 @@ func updateReview(storage storage.Review) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		req := new(reviewRequest)
 		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Marshalling error:", err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		params := httprouter.ParamsFromContext(r.Context())
 		id := params.ByName("id")
 		if _, err := uuid.FromString(id); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("ID Error:", err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -109,7 +109,7 @@ func updateReview(storage storage.Review) http.HandlerFunc {
 		rev.ID = id
 		model := reviewToStorage(rev)
 		if err := storage.Save(model); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
 			return
 		}
@@ -126,13 +126,13 @@ func deleteReview(storage storage.Review) http.HandlerFunc {
 		params := httprouter.ParamsFromContext(r.Context())
 		id := params.ByName("id")
 		if _, err := uuid.FromString(id); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("ID Error:", err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		if err := storage.Delete(id); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusNotFound)
 			return
 		}

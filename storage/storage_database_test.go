@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -17,11 +17,11 @@ func TestUserDatabaseSave(t *testing.T) {
 		UserPassword: "password",
 		CreatedAt:    time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	storage := &UserDatabase{Conn: conn}
+	storage := &UserDatabase{Pool: pool}
 	if err = storage.Save(um); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -41,11 +41,11 @@ func TestUserDatabaseFind(t *testing.T) {
 		UserPassword: "password",
 		CreatedAt:    time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	storage := &UserDatabase{Conn: conn}
+	storage := &UserDatabase{Pool: pool}
 	if err = storage.Save(um); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -69,11 +69,11 @@ func TestUserDatabaseDelete(t *testing.T) {
 		UserPassword: "password",
 		CreatedAt:    time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	storage := &UserDatabase{Conn: conn}
+	storage := &UserDatabase{Pool: pool}
 	if err = storage.Save(um); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -95,11 +95,11 @@ func TestCompanyDatabaseSave(t *testing.T) {
 		Logo:          "https://proddx.com/company-one/logo.png",
 		CreatedAt:     time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	storage := &CompanyDatabase{Conn: conn}
+	storage := &CompanyDatabase{Pool: pool}
 	if err = storage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -121,11 +121,11 @@ func TestCompanyDatabaseList(t *testing.T) {
 		Logo:          "https://proddx.com/company-one/logo.png",
 		CreatedAt:     time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	storage := &CompanyDatabase{Conn: conn}
+	storage := &CompanyDatabase{Pool: pool}
 	if err = storage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -151,11 +151,11 @@ func TestCompanyDatabaseFind(t *testing.T) {
 		Logo:          "https://proddx.com/company-one/logo.png",
 		CreatedAt:     time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	storage := &CompanyDatabase{Conn: conn}
+	storage := &CompanyDatabase{Pool: pool}
 	if err = storage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -181,11 +181,11 @@ func TestCompanyDatabaseDelete(t *testing.T) {
 		Logo:          "https://proddx.com/company-one/logo.png",
 		CreatedAt:     time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	storage := &CompanyDatabase{Conn: conn}
+	storage := &CompanyDatabase{Pool: pool}
 	if err = storage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -216,15 +216,15 @@ func TestProductDatabaseSave(t *testing.T) {
 		Rating:      0,
 		CreatedAt:   time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{Conn: conn}
+	companyStorage := &CompanyDatabase{Pool: pool}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{Conn: conn}
+	productStorage := &ProductDatabase{Pool: pool}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -258,15 +258,15 @@ func TestProductDatabaseList(t *testing.T) {
 		Rating:      0,
 		CreatedAt:   time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{Conn: conn}
+	companyStorage := &CompanyDatabase{Pool: pool}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{Conn: conn}
+	productStorage := &ProductDatabase{Pool: pool}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -304,15 +304,15 @@ func TestProductDatabaseFind(t *testing.T) {
 		Rating:      0,
 		CreatedAt:   time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{Conn: conn}
+	companyStorage := &CompanyDatabase{Pool: pool}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{Conn: conn}
+	productStorage := &ProductDatabase{Pool: pool}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -350,15 +350,15 @@ func TestProductDatabaseDelete(t *testing.T) {
 		Rating:      0,
 		CreatedAt:   time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{Conn: conn}
+	companyStorage := &CompanyDatabase{Pool: pool}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{Conn: conn}
+	productStorage := &ProductDatabase{Pool: pool}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -401,19 +401,19 @@ func TestReviewDatabaseSave(t *testing.T) {
 		Rating:    3,
 		CreatedAt: time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{Conn: conn}
+	companyStorage := &CompanyDatabase{Pool: pool}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{Conn: conn}
+	productStorage := &ProductDatabase{Pool: pool}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	reviewStorage := &ReviewDatabase{Conn: conn}
+	reviewStorage := &ReviewDatabase{Pool: pool}
 	if err = reviewStorage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -459,19 +459,19 @@ func TestReviewDatabaseList(t *testing.T) {
 		Rating:    3,
 		CreatedAt: time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{Conn: conn}
+	companyStorage := &CompanyDatabase{Pool: pool}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{Conn: conn}
+	productStorage := &ProductDatabase{Pool: pool}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	reviewStorage := &ReviewDatabase{Conn: conn}
+	reviewStorage := &ReviewDatabase{Pool: pool}
 	if err = reviewStorage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -521,19 +521,19 @@ func TestReviewDatabaseFind(t *testing.T) {
 		Rating:    3,
 		CreatedAt: time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{Conn: conn}
+	companyStorage := &CompanyDatabase{Pool: pool}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{Conn: conn}
+	productStorage := &ProductDatabase{Pool: pool}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	reviewStorage := &ReviewDatabase{Conn: conn}
+	reviewStorage := &ReviewDatabase{Pool: pool}
 	if err = reviewStorage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -583,19 +583,19 @@ func TestReviewDatabaseDelete(t *testing.T) {
 		Rating:    3,
 		CreatedAt: time.Now(),
 	}
-	conn, err := pgx.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(context.Background(), "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	companyStorage := &CompanyDatabase{Conn: conn}
+	companyStorage := &CompanyDatabase{Pool: pool}
 	if err = companyStorage.Save(cm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	productStorage := &ProductDatabase{Conn: conn}
+	productStorage := &ProductDatabase{Pool: pool}
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	reviewStorage := &ReviewDatabase{Conn: conn}
+	reviewStorage := &ReviewDatabase{Pool: pool}
 	if err = reviewStorage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}

@@ -26,7 +26,7 @@ func login(storage storage.User) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		req := new(loginRequest)
 		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Marshalling error:", err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -37,7 +37,7 @@ func login(storage storage.User) http.HandlerFunc {
 		}
 		record, err := storage.Find(req.Email)
 		if err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
@@ -48,7 +48,7 @@ func login(storage storage.User) http.HandlerFunc {
 		}
 		token, err := tokens.New(record.ID.String())
 		if err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Token error:", err.Error())
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
@@ -64,7 +64,7 @@ func register(userStorage storage.User, companyStorage storage.Company) http.Han
 		var req registrationRequest
 		var err error
 		if err = json.NewDecoder(r.Body).Decode(&req); err != nil {
-			fmt.Println("Error", err.Error())
+			fmt.Println("Marshalling error", err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -82,13 +82,13 @@ func register(userStorage storage.User, companyStorage storage.Company) http.Han
 			CreatedAt: time.Now(),
 		}
 		if u.Password, err = hashPassword(req.Password); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Hashing error:", err.Error())
 			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
 			return
 		}
 		userModel := userToStorage(&u)
 		if err = userStorage.Save(userModel); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("User storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
 			return
 		}
@@ -102,7 +102,7 @@ func register(userStorage storage.User, companyStorage storage.Company) http.Han
 		}
 		compModel := companyToStorage(&comp)
 		if err = companyStorage.Save(compModel); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Company storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
 			return
 		}

@@ -15,7 +15,7 @@ func insertCompany(storage storage.Company) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		reqBody := new(companyRequest)
 		if err := json.NewDecoder(r.Body).Decode(reqBody); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Marshalling error:", err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -31,7 +31,7 @@ func insertCompany(storage storage.Company) http.HandlerFunc {
 		comp.CreatedAt = time.Now()
 		model := companyToStorage(comp)
 		if err := storage.Save(model); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
 			return
 		}
@@ -46,7 +46,7 @@ func listCompanies(storage storage.Company) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		records, err := storage.List()
 		if err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusNotFound)
 			return
 		}
@@ -70,14 +70,14 @@ func findCompany(storage storage.Company) http.HandlerFunc {
 		params := httprouter.ParamsFromContext(r.Context())
 		id := params.ByName("id")
 		if _, err := uuid.FromString(id); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("ID Error:", err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		record, err := storage.Find(id)
 		if err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusNotFound)
 			return
 		}
@@ -93,14 +93,14 @@ func updateCompany(storage storage.Company) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		req := new(companyRequest)
 		if err := json.NewDecoder(r.Body).Decode(req); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Marshalling error:", err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		params := httprouter.ParamsFromContext(r.Context())
 		id := params.ByName("id")
 		if _, err := uuid.FromString(id); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("ID Error:", err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -109,7 +109,7 @@ func updateCompany(storage storage.Company) http.HandlerFunc {
 		comp.ID = id
 		model := companyToStorage(comp)
 		if err := storage.Save(model); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
 			return
 		}
@@ -126,13 +126,13 @@ func deleteCompany(storage storage.Company) http.HandlerFunc {
 		params := httprouter.ParamsFromContext(r.Context())
 		id := params.ByName("id")
 		if _, err := uuid.FromString(id); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("ID Error:", err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		if err := storage.Delete(id); err != nil {
-			fmt.Println("Error:", err.Error())
+			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusNotFound)
 			return
 		}

@@ -22,7 +22,7 @@ import (
 	//
 	sw "api.proddx.com/router"
 	"api.proddx.com/storage"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 func main() {
@@ -30,16 +30,16 @@ func main() {
 
 	ctx := context.Background()
 
-	conn, err := pgx.Connect(ctx, "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(ctx, "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-	defer conn.Close(ctx)
+	defer pool.Close()
 
-	userStore := &storage.UserDatabase{Conn: conn}
-	companyStore := &storage.CompanyDatabase{Conn: conn}
-	productStore := &storage.ProductDatabase{Conn: conn}
-	reviewStore := &storage.ReviewDatabase{Conn: conn}
+	userStore := &storage.UserDatabase{Pool: pool}
+	companyStore := &storage.CompanyDatabase{Pool: pool}
+	productStore := &storage.ProductDatabase{Pool: pool}
+	reviewStore := &storage.ReviewDatabase{Pool: pool}
 
 	router := sw.New(userStore, companyStore, productStore, reviewStore)
 
