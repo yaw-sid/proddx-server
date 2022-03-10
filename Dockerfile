@@ -1,14 +1,14 @@
-FROM golang:1.10 AS build
-WORKDIR /go/src
-COPY go ./go
-COPY main.go .
+FROM golang:1.16-alpine
 
-ENV CGO_ENABLED=0
-RUN go get -d -v ./...
+WORKDIR /app
 
-RUN go build -a -installsuffix cgo -o swagger .
+COPY go.* ./
+RUN go mod download
 
-FROM scratch AS runtime
-COPY --from=build /go/src/swagger ./
-EXPOSE 8080/tcp
-ENTRYPOINT ["./swagger"]
+COPY . ./
+
+RUN go build -o bin/proddx-server cmd/server/*.go
+
+EXPOSE 5000
+
+CMD [ "bin/proddx-server" ]
