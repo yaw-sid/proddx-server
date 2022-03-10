@@ -108,7 +108,7 @@ func (pms *ProductMemoryStore) Save(model *ProductModel) error {
 	return nil
 }
 
-func (pms ProductMemoryStore) List() ([]ProductModel, error) {
+func (pms ProductMemoryStore) List(companyID string) ([]ProductModel, error) {
 	if len(pms.products) == 0 {
 		return pms.products, errors.New("No products found")
 	}
@@ -156,7 +156,7 @@ func (rms *ReviewMemoryStore) Save(model *ReviewModel) error {
 	return nil
 }
 
-func (rms ReviewMemoryStore) List() ([]ReviewModel, error) {
+func (rms ReviewMemoryStore) List(companyID string, productID string) ([]ReviewModel, error) {
 	if len(rms.reviews) == 0 {
 		return rms.reviews, errors.New("No reviews found")
 	}

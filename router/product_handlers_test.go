@@ -81,7 +81,7 @@ func TestListProducts(t *testing.T) {
 	if err := json.Unmarshal(w.Body.Bytes(), &res); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	records, err := productStore.List()
+	records, err := productStore.List("")
 	if err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}

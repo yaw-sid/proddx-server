@@ -185,7 +185,7 @@ func TestProductMemoryList(t *testing.T) {
 	if err := storage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	records, err := storage.List()
+	records, err := storage.List("")
 	if err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -273,7 +273,7 @@ func TestReviewMemoryList(t *testing.T) {
 	if err := storage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	records, err := storage.List()
+	records, err := storage.List("", "")
 	if err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}

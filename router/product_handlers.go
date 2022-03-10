@@ -46,7 +46,15 @@ func insertProduct(storage storage.Product) http.HandlerFunc {
 
 func listProducts(storage storage.Product) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		records, err := storage.List()
+		companyID := r.URL.Query().Get("company_id")
+		if companyID != "" {
+			if _, err := uuid.FromString(companyID); err != nil {
+				fmt.Println("Marshalling error:", err.Error())
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+		}
+		records, err := storage.List(companyID)
 		if err != nil {
 			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusNotFound)

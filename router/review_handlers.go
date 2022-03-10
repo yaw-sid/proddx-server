@@ -44,7 +44,23 @@ func insertReview(storage storage.Review) http.HandlerFunc {
 
 func listReviews(storage storage.Review) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		records, err := storage.List()
+		companyID := r.URL.Query().Get("company_id")
+		if companyID != "" {
+			if _, err := uuid.FromString(companyID); err != nil {
+				fmt.Println("Marshalling error:", err.Error())
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+		}
+		productID := r.URL.Query().Get("product_id")
+		if productID != "" {
+			if _, err := uuid.FromString(productID); err != nil {
+				fmt.Println("Marshalling error:", err.Error())
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+		}
+		records, err := storage.List(companyID, productID)
 		if err != nil {
 			fmt.Println("Storage error:", err.Error())
 			http.Error(w, err.Error(), http.StatusNotFound)

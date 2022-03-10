@@ -82,7 +82,7 @@ func TestListReviews(t *testing.T) {
 	if err := json.Unmarshal(w.Body.Bytes(), &res); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	records, err := reviewStore.List()
+	records, err := reviewStore.List("", "")
 	if err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}

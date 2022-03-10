@@ -270,7 +270,7 @@ func TestProductDatabaseList(t *testing.T) {
 	if err = productStorage.Save(pm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	records, err := productStorage.List()
+	records, err := productStorage.List("")
 	if err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
@@ -475,7 +475,7 @@ func TestReviewDatabaseList(t *testing.T) {
 	if err = reviewStorage.Save(rm); err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}
-	records, err := reviewStorage.List()
+	records, err := reviewStorage.List("", "")
 	if err != nil {
 		t.Fatalf("Error: %s", err.Error())
 	}

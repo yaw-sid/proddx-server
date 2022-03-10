@@ -12,6 +12,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 
 	// WARNING!
 	// Change this to a fully-qualified import path
@@ -30,7 +31,7 @@ func main() {
 
 	ctx := context.Background()
 
-	pool, err := pgxpool.Connect(ctx, "postgres://novi:novi@localhost:5432/proddx_db?sslmode=disable")
+	pool, err := pgxpool.Connect(ctx, os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %s", err.Error())
 	}
@@ -43,5 +44,5 @@ func main() {
 
 	router := sw.New(userStore, companyStore, productStore, reviewStore)
 
-	log.Fatal(http.ListenAndServe(":5000", router))
+	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), router))
 }

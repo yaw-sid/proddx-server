@@ -15,14 +15,14 @@ type Company interface {
 
 type Product interface {
 	Save(*ProductModel) error
-	List() ([]ProductModel, error)
+	List(companyID string) ([]ProductModel, error)
 	Find(string) (*ProductModel, error)
 	Delete(string) error
 }
 
 type Review interface {
 	Save(*ReviewModel) error
-	List() ([]ReviewModel, error)
+	List(companyID string, productID string) ([]ReviewModel, error)
 	Find(string) (*ReviewModel, error)
 	Delete(string) error
 }

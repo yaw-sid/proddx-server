@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -118,8 +119,14 @@ func (cb ProductDatabase) Save(model *ProductModel) error {
 	return nil
 }
 
-func (cb ProductDatabase) List() ([]ProductModel, error) {
-	rows, err := cb.Pool.Query(context.Background(), "select * from products")
+func (cb ProductDatabase) List(companyID string) ([]ProductModel, error) {
+	stmt := "select * from products"
+	var args []interface{}
+	if companyID != "" {
+		stmt = stmt + " where company_id=$1"
+		args = append(args, companyID)
+	}
+	rows, err := cb.Pool.Query(context.Background(), stmt, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -175,8 +182,18 @@ func (cb ReviewDatabase) Save(model *ReviewModel) error {
 	return nil
 }
 
-func (cb ReviewDatabase) List() ([]ReviewModel, error) {
-	rows, err := cb.Pool.Query(context.Background(), "select * from reviews")
+func (cb ReviewDatabase) List(companyID string, productID string) ([]ReviewModel, error) {
+	stmt := "select * from reviews where id is not null"
+	var args []interface{}
+	if companyID != "" {
+		stmt = stmt + " and company_id=$" + strconv.Itoa(len(args)+1)
+		args = append(args, companyID)
+	}
+	if productID != "" {
+		stmt = stmt + " and product_id=$" + strconv.Itoa(len(args)+1)
+		args = append(args, productID)
+	}
+	rows, err := cb.Pool.Query(context.Background(), stmt, args...)
 	if err != nil {
 		return nil, err
 	}
