@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"api.proddx.com/storage"
@@ -28,7 +29,7 @@ func insertProduct(storage storage.Product) http.HandlerFunc {
 
 		prod := productFromTransport(req)
 		prod.ID = uuid.NewV4().String()
-		prod.FeedbackURL = fmt.Sprintf("https://review.proddx.com/%s", prod.ID)
+		prod.FeedbackURL = fmt.Sprintf("https://%s/%s", os.Getenv("REVIEW_URL"), prod.ID)
 		prod.Rating = 0
 		prod.CreatedAt = time.Now()
 		model := productToStorage(prod)
