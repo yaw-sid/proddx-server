@@ -7,10 +7,9 @@ RUN go mod download
 
 COPY . ./
 
-RUN go build -o bin/proddx-server cmd/server/*.go
+RUN go build -o bin/migration cmd/migration/*.go \
+    && go build -o bin/proddx-server cmd/server/*.go
 
 EXPOSE 5000
-
-RUN go build -o bin/migration cmd/migration/*.go
 
 CMD [ "bin/migration; bin/proddx-server" ]
